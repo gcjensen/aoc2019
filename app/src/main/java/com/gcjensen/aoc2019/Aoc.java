@@ -10,7 +10,12 @@ public class Aoc {
 
         days.forEach(day -> {
             List input = day.parseInput();
-            System.out.println(day.solvePart1(input));
+            System.out.printf(
+                "Day %d\n\s\sPart 1: %s\n\s\sPart 2: %s",
+                day.day,
+                day.solvePart1(input),
+                day.solvePart2(input)
+            );
         });
     }
 }

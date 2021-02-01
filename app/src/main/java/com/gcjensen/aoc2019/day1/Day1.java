@@ -18,6 +18,26 @@ public class Day1 extends Day<Integer> {
     }
 
     public Integer solvePart1(List<Integer> input) {
-        return input.stream().mapToInt(m -> (int) (Math.floor(m.doubleValue() / 3) - 2)).sum();
+        return input.stream().mapToInt(i -> this.calculateFuel(i, false)).sum();
+    }
+
+    @Override
+    public Integer solvePart2(List<Integer> input) {
+        return input.stream().mapToInt(i -> this.calculateFuel(i, true)).sum();
+    }
+
+    private Integer calculateFuel(Integer mass, boolean addFuelWeight) {
+       int fuel = (int) Math.floor(mass.doubleValue() / 3) - 2;
+
+       // Return early without recursing if we're not accounting for additional fuel weight
+       if (!addFuelWeight) {
+           return fuel;
+       }
+
+       if (fuel <= 0) {
+           return 0;
+       }
+
+       return fuel + calculateFuel(fuel, true);
     }
 }
