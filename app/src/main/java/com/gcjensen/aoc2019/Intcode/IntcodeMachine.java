@@ -5,42 +5,43 @@ public class IntcodeMachine {
     private static final int OP_MUL = 2;
     private static final int OP_HALT = 99;
 
-    private final Intcode instructions;
-    private int pos = 0;
+    private final Intcode memory;
+    private int ptr = 0;
 
-    public IntcodeMachine(Intcode instructions) {
-        this.instructions = instructions;
+    public IntcodeMachine(Intcode program) {
+        this.memory = program;
     }
 
     public Intcode run() {
         while (step());
 
-        return this.instructions;
+        return this.memory;
     }
 
     private boolean step() {
-        int opcode = this.instructions.get(this.pos);
+        int opcode = this.memory.get(this.ptr);
         if (opcode == OP_HALT) {
             return false;
         }
 
-        int pos1 = this.instructions.get(this.pos + 1);
-        int pos2 = this.instructions.get(this.pos + 2);
-        int resPos = this.instructions.get(this.pos + 3);
+        // Derive the instruction
+        int pos1 = this.memory.get(this.ptr + 1);
+        int pos2 = this.memory.get(this.ptr + 2);
+        int resPos = this.memory.get(this.ptr + 3);
 
-        int op1 = this.instructions.get(pos1);
-        int op2 = this.instructions.get(pos2);
+        int op1 = this.memory.get(pos1);
+        int op2 = this.memory.get(pos2);
 
         switch (opcode) {
             case OP_ADD:
-                this.instructions.set(resPos, op1 + op2);
+                this.memory.set(resPos, op1 + op2);
                 break;
             case OP_MUL:
-                this.instructions.set(resPos, op1 * op2);
+                this.memory.set(resPos, op1 * op2);
                 break;
         }
 
-        this.pos += 4;
+        this.ptr += 4;
         return true;
     }
 }
