@@ -1,7 +1,9 @@
-package com.gcjensen.aoc2019;
+package com.gcjensen.aoc2019.day1;
 
 import java.util.List;
 import static org.junit.Assert.*;
+
+import com.gcjensen.aoc2019.Day;
 import org.junit.Test;
 
 import com.gcjensen.aoc2019.day1.Day1;

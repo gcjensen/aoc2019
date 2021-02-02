@@ -9,7 +9,7 @@ import com.gcjensen.aoc2019.Day;
 public class Day1 extends Day<Integer> {
 
     public Day1() {
-        this.day = 1;
+        super(1);
     }
 
     @Override

@@ -9,6 +9,10 @@ import java.util.stream.Stream;
 public abstract class Day<T> {
     protected int day;
 
+    public Day(int day) {
+        this.day = day;
+    }
+
     public List<T> parseInput() {
         String filename = String.format("day%d.txt", this.day);
         InputStream stream = Day.class.getResourceAsStream(filename);
