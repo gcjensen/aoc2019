@@ -8,7 +8,7 @@ public class Intcode {
     private final List<Integer> intcode;
 
     public Intcode(List<Integer> intcode) {
-       this.intcode = intcode;
+       this.intcode = new ArrayList<>(intcode);
     }
 
     public static Intcode of(Integer... i) {

@@ -10,6 +10,10 @@ import com.gcjensen.aoc2019.Intcode.Intcode;
 import com.gcjensen.aoc2019.Intcode.IntcodeMachine;
 
 public class Day2 extends Day<Integer> {
+    private static final int OUTPUT_ADDR = 0;
+    private static final int NOUN_ADDR = 1;
+    private static final int VERB_ADDR = 2;
+
     public Day2() {
         super(2);
     }
@@ -30,6 +34,24 @@ public class Day2 extends Day<Integer> {
 
     @Override
     public Integer solvePart2(List<Integer> input) {
+        final int minVal = 0;
+        final int maxVal = 99;
+        final int targetVal = 19690720;
+
+        for (int noun = minVal; noun <= maxVal; noun++) {
+            for (int verb = minVal; verb <= maxVal; verb++) {
+                Intcode ic = new Intcode(input);
+                ic.set(NOUN_ADDR, noun);
+                ic.set(VERB_ADDR, verb);
+
+                Intcode output = new IntcodeMachine(ic).run();
+
+                if (output.get(OUTPUT_ADDR) == targetVal) {
+                    return 100 * noun + verb;
+                }
+            }
+        }
+
         return null;
     }
 

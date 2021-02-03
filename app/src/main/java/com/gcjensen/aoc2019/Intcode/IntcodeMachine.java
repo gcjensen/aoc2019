@@ -24,20 +24,21 @@ public class IntcodeMachine {
             return false;
         }
 
-        // Derive the instruction
-        int pos1 = this.memory.get(this.ptr + 1);
-        int pos2 = this.memory.get(this.ptr + 2);
-        int resPos = this.memory.get(this.ptr + 3);
+        // Get the various addresses
+        int op1Addr = this.memory.get(this.ptr + 1);
+        int op2Addr = this.memory.get(this.ptr + 2);
+        int resAddr = this.memory.get(this.ptr + 3);
 
-        int op1 = this.memory.get(pos1);
-        int op2 = this.memory.get(pos2);
+        // Get the operands at the addresses
+        int op1 = this.memory.get(op1Addr);
+        int op2 = this.memory.get(op2Addr);
 
         switch (opcode) {
             case OP_ADD:
-                this.memory.set(resPos, op1 + op2);
+                this.memory.set(resAddr, op1 + op2);
                 break;
             case OP_MUL:
-                this.memory.set(resPos, op1 * op2);
+                this.memory.set(resAddr, op1 * op2);
                 break;
         }
 
