@@ -4,12 +4,14 @@ import java.util.List;
 
 import com.gcjensen.aoc2019.day1.Day1;
 import com.gcjensen.aoc2019.day2.Day2;
+import com.gcjensen.aoc2019.day3.Day3;
 
 public class Aoc {
     public static void main(String[] args) {
         List<Day> days = List.of(
             new Day1(),
-            new Day2()
+            new Day2(),
+            new Day3()
         );
 
         days.forEach(day -> {
