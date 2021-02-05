@@ -26,6 +26,7 @@ public class Day4 extends Day<Range> {
 
     @Override
     public Integer solvePart2(List<Range> input) {
-        return null;
+        List<IntPredicate> rules = List.of(Rules::repetition2xOnly, Rules::increasingDigits);
+        return NumberGenerator.generate(input.get(0), rules).size();
     }
 }

@@ -25,4 +25,14 @@ public class RulesTest {
         assertFalse(Rules.repetition(121));
         assertFalse(Rules.repetition(2121));
     }
+
+    @Test public void testHasRepetition2xOnly() {
+        assertTrue(Rules.repetition2xOnly(11));
+        assertTrue(Rules.repetition2xOnly(110));
+        assertTrue(Rules.repetition2xOnly(111122));
+
+        assertFalse(Rules.repetition2xOnly(111));
+        assertFalse(Rules.repetition2xOnly(1222));
+        assertFalse(Rules.repetition2xOnly(1000));
+    }
 }

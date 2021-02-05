@@ -16,4 +16,9 @@ public class Day4Test {
         assertEquals(9, day4.solvePart1(testInput));
         assertEquals(1767, day4.solvePart1(actualInput));
     }
+
+    @Test public void testPart2() {
+        assertEquals(8, day4.solvePart2(testInput));
+        assertEquals(1192, day4.solvePart2(actualInput));
+    }
 }
