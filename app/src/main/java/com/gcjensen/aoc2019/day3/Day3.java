@@ -18,16 +18,17 @@ public class Day3 extends Day<Wire> {
 
     @Override
     public Integer solvePart1(List<Wire> wires) {
-        return Grid.withWires(wires).getWireOverlaps().stream()
+        return Grid.withWires(wires).getWireOverlaps().keySet().stream()
             .map(Grid::distanceFromOrigin)
             .min(Integer::compareTo)
             .orElseThrow();
     }
 
-
     @Override
-    public Integer solvePart2(List<Wire> input) {
-        return null;
+    public Integer solvePart2(List<Wire> wires) {
+        return Grid.withWires(wires).getWireOverlaps().values().stream()
+            .min(Integer::compareTo)
+            .orElseThrow();
     }
 }
 

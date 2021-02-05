@@ -5,7 +5,7 @@ import java.util.*;
 import java.util.List;
 
 public class Grid {
-    private final List<Set<Point>> paths = new ArrayList<>();
+    private final List<HashMap<Point, Integer>> paths = new ArrayList<>();
 
     public static Grid withWires(List<Wire> wires) {
         var grid = new Grid();
@@ -16,9 +16,24 @@ public class Grid {
         return grid;
     }
 
-    public Set<Point> getWireOverlaps() {
-        var overlap = this.paths.get(0);
-        this.paths.subList(1, this.paths.size()).forEach(overlap::retainAll);
+    public HashMap<Point, Integer> getWireOverlaps() {
+        var overlap = new HashMap<Point, Integer>();
+
+        var firstWire = this.paths.get(0);
+        for (var point : firstWire.keySet()) {
+           for (var wire : this.paths.subList(1, this.paths.size())) {
+               if (wire.containsKey(point)) {
+                   var steps = wire.get(point);
+
+                   if (overlap.containsKey(point)) {
+                      overlap.put(point, overlap.get(point) + steps);
+                      continue;
+                   }
+
+                   overlap.put(point, firstWire.get(point) + steps);
+               }
+           }
+        }
 
         return overlap;
     }
@@ -29,18 +44,25 @@ public class Grid {
     }
 
     private void traceWire(Wire wire) {
-        var path = new HashSet<Point>();
+        var path = new HashMap<Point, Integer>();
 
-        int x = 0, y = 0;
+        int x = 0, y = 0, steps = 0;
         for (var move : wire.getMoves()) {
             for (var i = 0; i < move.getDistance(); i++) {
                 var dir = move.getDirection();
                 x += dir.getDX();
                 y += dir.getDY();
 
-                path.add(new Point(x, y));
+                var point = new Point(x, y);
+                steps++;
+
+                // We only want to add the point the first time we see it
+                if (!path.containsKey(point)) {
+                    path.put(point, steps);
+                }
             }
         }
+
 
         this.paths.add(path);
     }
