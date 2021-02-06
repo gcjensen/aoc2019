@@ -1,5 +1,7 @@
 package com.gcjensen.aoc2019.Intcode;
 
+import java.util.Arrays;
+
 public class IntcodeMachine {
     private final Intcode memory;
 
@@ -71,6 +73,26 @@ public class IntcodeMachine {
             case MUL -> this.memory.set(params[2].value(), readMem(params[0]) * readMem(params[1]));
             case IN -> this.memory.set(params[0].value(), this.io.input());
             case OUT -> this.io.output(readMem(params[0]));
+            case JUMP_TRUE -> {
+                if (readMem(params[0]) != 0) {
+                    this.ptr = readMem(params[1]);
+                    return true;
+                }
+            }
+            case JUMP_FALSE -> {
+                if (readMem(params[0]) == 0) {
+                    this.ptr = readMem(params[1]);
+                    return true;
+                }
+            }
+            case LESS_THAN -> {
+                var result = readMem(params[0]) < readMem((params[1])) ? 1 : 0;
+                this.memory.set(params[2].value(), result);
+            }
+            case EQUAL -> {
+                var result = readMem(params[0]) == readMem((params[1])) ? 1 : 0;
+                this.memory.set(params[2].value(), result);
+            }
         }
 
         this.ptr += opcode.getNumParameters() + 1;

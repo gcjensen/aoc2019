@@ -14,4 +14,8 @@ public class Day5Test {
     @Test public void testPart1() {
         assertEquals(10987514, day5.solvePart1(actualInput));
     }
+
+    @Test public void testPart2() {
+        assertEquals(14195011, day5.solvePart2(actualInput));
+    }
 }

@@ -5,6 +5,10 @@ public enum Opcode {
     MUL(2, 3),
     IN(3, 1),
     OUT(4, 1),
+    JUMP_TRUE(5, 2),
+    JUMP_FALSE(6, 2),
+    LESS_THAN(7, 3),
+    EQUAL(8, 3),
     HALT(99, 0);
 
     private final int id, numParameters;
