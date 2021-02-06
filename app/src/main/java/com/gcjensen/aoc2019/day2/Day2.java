@@ -28,8 +28,9 @@ public class Day2 extends Day<Integer> {
     @Override
     public Integer solvePart1(List<Integer> input) {
         Intcode ic = this.restoreGravityAssistProgram(new Intcode(input));
-        Intcode output = new IntcodeMachine(ic).run();
-        return output.get(0);
+        var machine = new IntcodeMachine(ic);
+        machine.run();
+        return machine.dumpMemory().get(0);
     }
 
     @Override
@@ -44,9 +45,9 @@ public class Day2 extends Day<Integer> {
                 ic.set(NOUN_ADDR, noun);
                 ic.set(VERB_ADDR, verb);
 
-                Intcode output = new IntcodeMachine(ic).run();
-
-                if (output.get(OUTPUT_ADDR) == targetVal) {
+                var machine = new IntcodeMachine(ic);
+                machine.run();
+                if (machine.dumpMemory().get(OUTPUT_ADDR) == targetVal) {
                     return 100 * noun + verb;
                 }
             }

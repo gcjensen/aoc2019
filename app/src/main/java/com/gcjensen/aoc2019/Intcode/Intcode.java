@@ -33,8 +33,16 @@ public class Intcode {
         return this.intcode.get(pos);
     }
 
+    public int length() {
+        return this.intcode.size();
+    }
+
     public void set(int pos, int val) {
         this.intcode.set(pos, val);
+    }
+
+    public Intcode slice(int start, int end) {
+        return new Intcode(this.intcode.subList(start, end));
     }
 
 }
