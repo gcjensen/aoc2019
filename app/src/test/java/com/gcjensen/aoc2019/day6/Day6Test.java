@@ -22,12 +22,19 @@ public class Day6Test {
         Orbit.parse("D)I"),
         Orbit.parse("E)J"),
         Orbit.parse("J)K"),
-        Orbit.parse("K)L")
+        Orbit.parse("K)L"),
+        Orbit.parse("K)YOU"),
+        Orbit.parse("I)SAN")
     );
     private final List<Orbit> actualInput = day6.parseInput();
 
     @Test public void testPart1() {
-        assertEquals(42, day6.solvePart1(testInput));
+        assertEquals(54, day6.solvePart1(testInput));
         assertEquals(292387, day6.solvePart1(actualInput));
+    }
+
+    @Test public void testPart2() {
+        assertEquals(4, day6.solvePart2(testInput));
+        assertEquals(433, day6.solvePart2(actualInput));
     }
 }

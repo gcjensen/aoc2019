@@ -18,11 +18,18 @@ public class Day6 extends Day<Orbit> {
     }
 
     public Integer solvePart1(List<Orbit> input) {
-        return Map.fromData(input).computeOrbitCountChecksum();
+        return OrbitMap.fromData(input).computeOrbitCountChecksum();
     }
 
     @Override
     public Integer solvePart2(List<Orbit> input) {
-        return null;
+        var map = OrbitMap.fromData(input);
+        var route = map.plotRoute("YOU", "SAN");
+
+        /*
+         * Minus 3 because we're don't want to include the start and end objects, and we care about
+         * the jumps between objects, rather than the number of objects.
+         */
+        return route.size() - 3;
     }
 }
