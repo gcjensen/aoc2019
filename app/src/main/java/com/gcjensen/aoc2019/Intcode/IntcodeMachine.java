@@ -3,10 +3,11 @@ package com.gcjensen.aoc2019.Intcode;
 import java.util.Arrays;
 
 public class IntcodeMachine {
-    private final Intcode memory;
-
+    private Intcode memory;
     private IntcodeIO io;
     private int ptr = 0;
+
+    public IntcodeMachine() {}
 
     public IntcodeMachine(Intcode program) {
         this.memory = program;
@@ -25,8 +26,17 @@ public class IntcodeMachine {
         return this.memory;
     }
 
+    public void loadProgram(Intcode program) {
+        this.memory = program;
+    }
+
     public void run() {
+        this.ptr = 0;
         while (step());
+    }
+
+    public void setIO(IntcodeIO io) {
+        this.io = io;
     }
 
     /************ Private Implementation ************/
