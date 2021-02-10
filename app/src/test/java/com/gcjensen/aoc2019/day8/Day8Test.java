@@ -14,4 +14,16 @@ public class Day8Test {
     @Test public void testPart1() {
         assertEquals(1920, day8.solvePart1(actualInput));
     }
+
+    @Test public void testPart2() {
+        var expected = """
+            000   00  0  0 0     00 \s
+            0  0 0  0 0  0 0    0  0\s
+            0  0 0    0  0 0    0  0\s
+            000  0    0  0 0    0000\s
+            0    0  0 0  0 0    0  0\s
+            0     00   00  0000 0  0\s
+            """;
+        assertEquals(expected, day8.solvePart2(actualInput));
+    }
 }

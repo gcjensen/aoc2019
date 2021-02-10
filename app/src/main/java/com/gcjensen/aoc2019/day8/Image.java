@@ -2,52 +2,48 @@ package com.gcjensen.aoc2019.day8;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class Image {
     private final List<Layer> layers;
+    private final int width, height;
 
-    public Image(List<Layer> layers) {
+    public Image(List<Layer> layers, int width, int height) {
         this.layers = layers;
+        this.width = width;
+        this.height = height;
     }
 
     public static Image parse(List<Integer> data, Integer width, Integer height) {
         var numLayers = width * height;
-        var layers = chunkUp(data, numLayers).stream()
+        var layers = Layer.chunkUp(data, numLayers).stream()
             .map(l -> Layer.parse(l, width))
             .collect(Collectors.toList());
 
-        return new Image(layers);
+        return new Image(layers, width, height);
+    }
+
+    public Layer decode() {
+        var combined = new ArrayList<Integer>();
+
+        for (var y = 0; y < this.height; y++) {
+            for (var x = 0; x < this.width; x++) {
+                for (var layer : this.getLayers()) {
+                    var pixel = layer.getPixel(x, y);
+                    if (pixel != Layer.TRANSPARENT) {
+                        combined.add(pixel);
+                        break;
+                    }
+                }
+            }
+        }
+
+        return Layer.parse(combined, this.width);
     }
 
     public List<Layer> getLayers() {
         return this.layers;
     }
 
-    public static class Layer {
-        private final List<Integer> digits;
-        private final List<List<Integer>> rows;
-
-        public Layer(List<Integer> digits, List<List<Integer>> rows) {
-            this.digits = digits;
-            this.rows = rows;
-        }
-
-        public static Layer parse(List<Integer> digits, int width) {
-            return new Layer(digits, new ArrayList<>(chunkUp(digits, width)));
-        }
-
-        public int digitCount(int digit) {
-            return (int) this.digits.stream().filter(d -> d == digit).count();
-        }
-    }
-
-    private static List<List<Integer>> chunkUp(List<Integer> digits, int size) {
-        final AtomicInteger counter = new AtomicInteger();
-        return new ArrayList<>(digits.stream()
-                .collect(Collectors.groupingBy(it -> counter.getAndIncrement() / size))
-                .values());
-    }
 }
 
