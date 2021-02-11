@@ -26,5 +26,5 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass = 'com.gcjensen.aoc2019.Aoc'
+    mainClass = 'uk.gcjensen.aoc2019.Aoc'
 }
