@@ -12,6 +12,7 @@ import uk.gcjensen.aoc2019.Intcode.IntcodeMachine;
 
 public class Day9 extends Day<Long> {
     private final int BOOST_TEST_MODE_INPUT = 1;
+    private final int BOOST_SENSOR_MODE_INPUT = 2;
 
     public Day9() {
         super(9);
@@ -35,8 +36,13 @@ public class Day9 extends Day<Long> {
     }
 
     @Override
-    public Integer solvePart2(List<Long> input) {
-        return null;
+    public Long solvePart2(List<Long> input) {
+        var diagIO = new DiagnosticIO(BOOST_SENSOR_MODE_INPUT);
+        var machine = IntcodeMachine.withIO(diagIO, new Intcode(input));
+        machine.run();
+
+        var output = diagIO.getOutput();
+        return output.get(diagIO.getOutput().size() - 1);
     }
 }
 

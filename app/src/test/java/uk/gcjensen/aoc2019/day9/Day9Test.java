@@ -16,4 +16,7 @@ public class Day9Test {
         assertEquals(3409270027L, day9.solvePart1(actualInput));
     }
 
+    @Test public void testPart2() {
+        assertEquals(82760L, day9.solvePart2(actualInput));
+    }
 }
