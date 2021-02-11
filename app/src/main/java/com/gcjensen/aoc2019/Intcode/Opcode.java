@@ -9,6 +9,7 @@ public enum Opcode {
     JUMP_FALSE(6, 2),
     LESS_THAN(7, 3),
     EQUAL(8, 3),
+    ADJ_BASE(9, 1),
     HALT(99, 0);
 
     private final int id, numParameters;
@@ -18,7 +19,7 @@ public enum Opcode {
         this.numParameters = numParameters;
     }
 
-    public static Opcode from(Integer instruction) {
+    public static Opcode from(Long instruction) {
         // Some opcodes are proceeded by up to 3 parameters, so mod 100 will remove those
         var opcodeID = instruction % 100;
         for (var opcode : Opcode.values()) {

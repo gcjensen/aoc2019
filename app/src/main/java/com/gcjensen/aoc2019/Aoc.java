@@ -10,6 +10,7 @@ import com.gcjensen.aoc2019.day5.Day5;
 import com.gcjensen.aoc2019.day6.Day6;
 import com.gcjensen.aoc2019.day7.Day7;
 import com.gcjensen.aoc2019.day8.Day8;
+import com.gcjensen.aoc2019.day9.Day9;
 
 public class Aoc {
     public static void main(String[] args) {
@@ -21,7 +22,8 @@ public class Aoc {
             new Day5(),
             new Day6(),
             new Day7(),
-            new Day8()
+            new Day8(),
+            new Day9()
         );
 
         days.forEach(day -> {

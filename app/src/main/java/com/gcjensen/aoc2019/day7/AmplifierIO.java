@@ -8,15 +8,15 @@ import java.util.Stack;
 import java.util.concurrent.BlockingQueue;
 
 public class AmplifierIO implements IntcodeIO {
-    private final BlockingQueue<Integer> inputList, outputList;
+    private final BlockingQueue<Long> inputList, outputList;
 
-    public AmplifierIO(BlockingQueue<Integer> inputList, BlockingQueue<Integer> outputList) {
+    public AmplifierIO(BlockingQueue<Long> inputList, BlockingQueue<Long> outputList) {
         this.inputList = inputList;
         this.outputList = outputList;
     }
 
     @Override
-    public void output(Integer val) {
+    public void output(long val) {
         try {
             this.outputList.put(val);
         } catch (InterruptedException e) {
@@ -25,7 +25,7 @@ public class AmplifierIO implements IntcodeIO {
     }
 
     @Override
-    public Integer input() {
+    public Long input() {
         try {
             return this.inputList.take();
         } catch (InterruptedException e) {

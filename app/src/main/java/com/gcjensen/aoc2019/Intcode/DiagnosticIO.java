@@ -2,27 +2,26 @@ package com.gcjensen.aoc2019.Intcode;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
-public class TestIO implements IntcodeIO {
-    private final Stack<Long> inputList = new Stack<>();
+public class DiagnosticIO implements IntcodeIO {
     private final List<Long> outputList = new ArrayList<>();
+    private final long input;
 
-    public TestIO(List<Long> input) {
-        this.inputList.addAll(input);
+    public DiagnosticIO(long input) {
+        this.input = input;
     }
 
     @Override
     public void output(long val) {
-       this.outputList.add(val);
+        this.outputList.add(val);
     }
 
     @Override
     public Long input() {
-        return this.inputList.pop();
+        return this.input;
     }
 
     public List<Long> getOutput() {
-       return this.outputList;
+        return this.outputList;
     }
 }

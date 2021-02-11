@@ -1,19 +1,19 @@
 package com.gcjensen.aoc2019.Intcode;
 
 public class Parameter {
-    private final int value;
+    private final long value;
     private final ParameterMode mode;
 
-    public Parameter(int value, ParameterMode mode) {
+    public Parameter(long value, ParameterMode mode) {
         this.value = value;
         this.mode = mode;
     }
 
     public ParameterMode mode() {
-        return mode;
+        return this.mode;
     }
 
-    public int value() {
-        return value;
+    public long value() {
+        return this.value;
     }
 }

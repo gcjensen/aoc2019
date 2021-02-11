@@ -9,7 +9,7 @@ import com.gcjensen.aoc2019.Day;
 import com.gcjensen.aoc2019.Intcode.Intcode;
 import com.gcjensen.aoc2019.Intcode.IntcodeMachine;
 
-public class Day2 extends Day<Integer> {
+public class Day2 extends Day<Long> {
     private static final int OUTPUT_ADDR = 0;
     private static final int NOUN_ADDR = 1;
     private static final int VERB_ADDR = 2;
@@ -19,35 +19,35 @@ public class Day2 extends Day<Integer> {
     }
 
     @Override
-    public List<Integer> parseInput(Stream<String> input) {
+    public List<Long> parseInput(Stream<String> input) {
         String inputStr = input.findFirst().map(Object::toString).orElse(null);
         Stream<String> stream = Arrays.stream(inputStr.split(","));
-        return stream.map(Integer::parseInt).collect(Collectors.toList());
+        return stream.map(Long::parseLong).collect(Collectors.toList());
     }
 
     @Override
-    public Integer solvePart1(List<Integer> input) {
+    public Integer solvePart1(List<Long> input) {
         Intcode ic = this.restoreGravityAssistProgram(new Intcode(input));
         var machine = new IntcodeMachine(ic);
         machine.run();
-        return machine.dumpMemory().get(0);
+        return (int) machine.dumpMemory().read(0);
     }
 
     @Override
-    public Integer solvePart2(List<Integer> input) {
+    public Integer solvePart2(List<Long> input) {
         final int minVal = 0;
         final int maxVal = 99;
         final int targetVal = 19690720;
 
-        for (int noun = minVal; noun <= maxVal; noun++) {
-            for (int verb = minVal; verb <= maxVal; verb++) {
+        for (var noun = minVal; noun <= maxVal; noun++) {
+            for (var verb = minVal; verb <= maxVal; verb++) {
                 Intcode ic = new Intcode(input);
-                ic.set(NOUN_ADDR, noun);
-                ic.set(VERB_ADDR, verb);
+                ic.write(NOUN_ADDR, (long) noun);
+                ic.write(VERB_ADDR, (long) verb);
 
                 var machine = new IntcodeMachine(ic);
                 machine.run();
-                if (machine.dumpMemory().get(OUTPUT_ADDR) == targetVal) {
+                if (machine.dumpMemory().read(OUTPUT_ADDR) == targetVal) {
                     return 100 * noun + verb;
                 }
             }
@@ -57,8 +57,8 @@ public class Day2 extends Day<Integer> {
     }
 
     private Intcode restoreGravityAssistProgram(Intcode ic) {
-       ic.set(1, 12);
-       ic.set(2, 2);
+       ic.write(1, 12L);
+       ic.write(2, 2L);
 
        return ic;
     }

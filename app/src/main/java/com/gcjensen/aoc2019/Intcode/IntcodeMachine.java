@@ -1,9 +1,10 @@
 package com.gcjensen.aoc2019.Intcode;
 
 public class IntcodeMachine {
-    private Intcode memory;
+    private final Intcode memory;
     private IntcodeIO io;
-    private int ptr = 0;
+
+    private long ptr = 0, relativeBase = 0;
 
     public IntcodeMachine(Intcode program) {
         this.memory = program;
@@ -30,71 +31,81 @@ public class IntcodeMachine {
     /************ Private Implementation ************/
 
     private Parameter[] parseParameters(Intcode values) {
-        var params = new Parameter[values.length()];
+        var params = new Parameter[values.size()];
 
         // Divide by 100 as not all opcodes have explicit param modes. 0 is implied if omitted.
-        var paramModes = this.memory.get(this.ptr) / 100;
+        var paramModes = this.memory.read(this.ptr) / 100;
 
         /*
          * For each parameter, pull a digit off the end of the paramModes (as they're essentially
          * in reverse).
          */
-        for (var i = 0; i < values.length(); i++) {
+        for (var i = 0; i < values.size(); i++) {
             var mode = ParameterMode.from(paramModes % 10);
             paramModes /= 10;
 
-            params[i] = new Parameter(this.memory.get(this.ptr + 1 + i), mode);
+            params[i] = new Parameter(this.memory.read(this.ptr + 1 + i), mode);
         }
 
         return params;
     }
 
-    private int readMem(Parameter parameter) {
+    private long readMem(Parameter parameter) {
         return switch (parameter.mode()) {
-            case POSITION -> this.memory.get(parameter.value());
+            case POSITION -> this.memory.read(parameter.value());
             case IMMEDIATE -> parameter.value();
+            case RELATIVE -> this.memory.read(parameter.value() + this.relativeBase);
         };
     }
 
     private boolean step() {
-        var opcode = Opcode.from(this.memory.get(this.ptr));
+        var opcode = Opcode.from(this.memory.read((int) this.ptr));
         if (opcode == Opcode.HALT) {
             return false;
         }
 
-        var start = this.ptr + 1;
+        var start = (int) (this.ptr + 1);
         var paramValues = this.memory.slice(start, start + opcode.getNumParameters());
         var params = this.parseParameters(paramValues);
 
         switch (opcode) {
-            case ADD -> this.memory.set(params[2].value(), readMem(params[0]) + readMem(params[1]));
-            case MUL -> this.memory.set(params[2].value(), readMem(params[0]) * readMem(params[1]));
-            case IN -> this.memory.set(params[0].value(), this.io.input());
+            case ADD -> this.writeMem(params[2], readMem(params[0]) + readMem(params[1]));
+            case MUL -> this.writeMem(params[2], readMem(params[0]) * readMem(params[1]));
+            case IN -> this.writeMem(params[0], this.io.input());
             case OUT -> this.io.output(readMem(params[0]));
             case JUMP_TRUE -> {
                 if (readMem(params[0]) != 0) {
-                    this.ptr = readMem(params[1]);
+                    this.ptr = (int) readMem(params[1]);
                     return true;
                 }
             }
             case JUMP_FALSE -> {
                 if (readMem(params[0]) == 0) {
-                    this.ptr = readMem(params[1]);
+                    this.ptr = (int) readMem(params[1]);
                     return true;
                 }
             }
             case LESS_THAN -> {
-                var result = readMem(params[0]) < readMem((params[1])) ? 1 : 0;
-                this.memory.set(params[2].value(), result);
+                var result = readMem(params[0]) < readMem((params[1])) ? 1L : 0L;
+                this.writeMem(params[2], result);
             }
             case EQUAL -> {
-                var result = readMem(params[0]) == readMem((params[1])) ? 1 : 0;
-                this.memory.set(params[2].value(), result);
+                var result = readMem(params[0]) == readMem((params[1])) ? 1L : 0L;
+                this.writeMem(params[2], result);
             }
+            case ADJ_BASE -> this.relativeBase += readMem(params[0]);
         }
 
         this.ptr += opcode.getNumParameters() + 1;
 
         return true;
+    }
+
+    private void writeMem(Parameter parameter, long value) {
+        switch (parameter.mode()) {
+            case POSITION -> this.memory.write(parameter.value(), value);
+            case IMMEDIATE -> throw new IllegalArgumentException();
+            case RELATIVE -> this.memory.write(parameter.value() + this.relativeBase, value);
+        };
     }
 }

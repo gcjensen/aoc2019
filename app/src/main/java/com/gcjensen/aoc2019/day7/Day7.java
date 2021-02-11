@@ -13,29 +13,29 @@ import com.gcjensen.aoc2019.Day;
 import com.gcjensen.aoc2019.Intcode.Intcode;
 import com.gcjensen.aoc2019.Intcode.IntcodeMachine;
 
-public class Day7 extends Day<Integer> {
+public class Day7 extends Day<Long> {
     public Day7() {
         super(7);
     }
 
     @Override
-    public List<Integer> parseInput(Stream<String> input) {
+    public List<Long> parseInput(Stream<String> input) {
         String inputStr = input.findFirst().map(Object::toString).orElse(null);
         Stream<String> stream = Arrays.stream(inputStr.split(","));
-        return stream.map(Integer::parseInt).collect(Collectors.toList());
+        return stream.map(Long::parseLong).collect(Collectors.toList());
     }
 
     @Override
-    public Integer solvePart1(List<Integer> input) {
-        return this.getMaxThrusterSignal(input, List.of(0, 1, 2, 3, 4));
+    public Integer solvePart1(List<Long> input) {
+        return this.getMaxThrusterSignal(input, List.of(0L, 1L, 2L, 3L, 4L));
     }
 
     @Override
-    public Integer solvePart2(List<Integer> input) {
-        return this.getMaxThrusterSignal(input, List.of(5, 6, 7, 8, 9));
+    public Integer solvePart2(List<Long> input) {
+        return this.getMaxThrusterSignal(input, List.of(5L, 6L, 7L, 8L, 9L));
     }
 
-    private int getMaxThrusterSignal(List<Integer> program, List<Integer> phases) {
+    private int getMaxThrusterSignal(List<Long> program, List<Long> phases) {
         //noinspection UnstableApiUsage
         return Collections2.permutations(phases).stream()
                 .mapToInt(settings -> this.runWithPhaseSettings(program, settings))
@@ -43,23 +43,23 @@ public class Day7 extends Day<Integer> {
                 .orElseThrow();
     }
 
-    private List<BlockingQueue<Integer>> initialiseIOQueues(List<Integer> settings) {
-        var queues = new ArrayList<BlockingQueue<Integer>>();
+    private List<BlockingQueue<Long>> initialiseIOQueues(List<Long> settings) {
+        var queues = new ArrayList<BlockingQueue<Long>>();
 
         // Initialise a queue for each phase setting (and therefore each amplifier)
-        for (Integer setting : settings) {
-            var queue = new LinkedBlockingQueue<Integer>(2);
+        for (Long setting : settings) {
+            var queue = new LinkedBlockingQueue<Long>(2);
             queue.offer(setting);
             queues.add(queue);
         }
 
         // As well as the phase setting, the first amplifier also needs an input signal of 0
-        queues.get(0).offer(0);
+        queues.get(0).offer(0L);
 
         return queues;
     }
 
-    private int runWithPhaseSettings(List<Integer> program, List<Integer> settings) {
+    private int runWithPhaseSettings(List<Long> program, List<Long> settings) {
         var queues = this.initialiseIOQueues(settings);
 
         var threads = new Thread[settings.size()];
@@ -83,7 +83,7 @@ public class Day7 extends Day<Integer> {
          */
         try {
             for (var thread : threads) thread.join();
-            return queues.get(0).take();
+            return queues.get(0).take().intValue();
         } catch (InterruptedException e) {
             throw new IllegalStateException();
         }
